@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<APIProxy revision="1" name="operaciones-baz-plataforma-aclaraciones-administracion-aclaraciones-v1">
+    <Basepaths>/operaciones-baz/plataforma-aclaraciones/administracion-aclaraciones/v1</Basepaths>
+    <ConfigurationVersion majorVersion="4" minorVersion="0"/>
+    <CreatedAt>1541697950944</CreatedAt>
+    <CreatedBy>jnietoc@elektra.com.mx</CreatedBy>
+    <Description>Levantar y gestionar informacion relacionada a las aclaraciones en el sistema</Description>
+    <DisplayName>operaciones-baz-plataforma-aclaraciones-administracion-aclaraciones-v1</DisplayName>
+    <LastModifiedAt>1541712691269</LastModifiedAt>
+    <LastModifiedBy>jnietoc@elektra.com.mx</LastModifiedBy>
+    <ManifestVersion>SHA-512:b318c5edc62e9b2e0eed67d17a3f8345188464c864296fe5b98a8e7a667272d43a34a235410a93d9904642ba47bdd0d8579cb03e8662621148265a6a49f1e826</ManifestVersion>
+    <Policies>
+        <Policy>AM-CORS</Policy>
+        <Policy>AM-Error-Mock</Policy>
+        <Policy>AM-Error-No-Encontrado</Policy>
+        <Policy>AM-Estadisticas</Policy>
+        <Policy>AM-ProxyEndPoint</Policy>
+        <Policy>AM-RespuestaDefault</Policy>
+        <Policy>AM-TargetEndPoint</Policy>
+        <Policy>EV-Estadisticas-Error-Response</Policy>
+        <Policy>FC-Logging</Policy>
+        <Policy>FC-Seguridad-Spike-Arrest</Policy>
+        <Policy>FC-Seguridad-Valida-Access-Token</Policy>
+        <Policy>ML-Logging-Archivo-Error</Policy>
+        <Policy>ML-Logging-Archivo-Info</Policy>
+        <Policy>ML-Logging-Loggly-Error</Policy>
+        <Policy>ML-Logging-Loggly-Info</Policy>
+        <Policy>RF-ErrorGenerico</Policy>
+        <Policy>RF-ErrorMock</Policy>
+        <Policy>STATS-Medicion</Policy>
+    </Policies>
+    <ProxyEndpoints>
+        <ProxyEndpoint>default</ProxyEndpoint>
+    </ProxyEndpoints>
+    <Resources>
+        <Resource>node://app.js</Resource>
+        <Resource>node://config-generated.json</Resource>
+        <Resource>node://config.json</Resource>
+        <Resource>node://mock/ok.json</Resource>
+        <Resource>node://node_modules.zip</Resource>
+        <Resource>node://package.json</Resource>
+    </Resources>
+    <Spec></Spec>
+    <TargetServers/>
+    <TargetEndpoints>
+        <TargetEndpoint>default</TargetEndpoint>
+        <TargetEndpoint>mock</TargetEndpoint>
+    </TargetEndpoints>
+</APIProxy>

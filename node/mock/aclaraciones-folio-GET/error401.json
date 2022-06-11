@@ -1,0 +1,9 @@
+{
+  "codigo": "401.Operaciones-Baz-Plataforma-Aclaraciones-Gestion-Aclaraciones.3000",
+  "mensaje": "No estas autorizado, favor de validar",
+  "folio": "22920181120162829644",
+  "info": "https://baz-developer.bancoazteca.com.mx/info#401.Operaciones-Baz-Plataforma-Aclaraciones-Gestion-Aclaraciones.3000",
+  "detalles": [
+    "El x-id-acceso está expirado o no es válido, favor de solicitar uno nuevo"
+  ]
+}

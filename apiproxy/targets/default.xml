@@ -1,0 +1,118 @@
+<TargetEndpoint name="default">
+    <Description>Levantar y gestionar informacion relacionada a las aclaraciones en el sistema - Backend</Description>
+    <FaultRules>
+        <!-- could put additional fault rules here if needed for local proxy -->
+    </FaultRules>
+    <DefaultFaultRule name="fault-rule">
+        <!-- Begin Logging -->
+        <Step>
+            <Name>AM-TargetEndPoint</Name>
+        </Step>
+        <Step>
+            <Name>JS-ContextFlow</Name>
+        </Step>
+        <Step>
+            <Name>FC-Logging</Name>
+        </Step>
+        <!-- End Logging -->
+        <!-- Begin Mediacion de Errores -->
+        <!-- End Mediacion de Errores -->
+        <AlwaysEnforce>true</AlwaysEnforce>
+    </DefaultFaultRule>
+    <PreFlow name="PreFlow">
+        <Request>
+            <!-- Begin Políticas -->
+            <Step>
+                <Name>FC-Seguridad-Jwt-Proxies</Name>
+            </Step>
+            <!-- End Políticas -->
+            <!-- Begin Logging -->
+            <Step>
+                <Name>JS-ContextFlow</Name>
+            </Step>
+            <Step>
+                <Name>FC-Logging</Name>
+            </Step>
+            <!-- End Logging -->
+        </Request>
+        <Response>
+            <!-- Begin Logging -->
+            <Step>
+                <Name>JS-ContextFlow</Name>
+            </Step>
+            <Step>
+                <Name>FC-Logging</Name>
+            </Step>
+            <!-- End Logging -->
+            <!-- Begin Políticas -->
+            <!-- End Políticas -->
+        </Response> 
+    </PreFlow>
+    <Flows>
+         <Flow name="POST /aclaraciones">
+            <Condition>(proxy.pathsuffix MatchesPath "/aclaraciones") and (request.verb = "POST")</Condition>
+            <Description/>
+            <Request/>
+            <Response/>
+        </Flow>
+        <Flow name="GET /aclaraciones/{folio}">
+            <Condition>(proxy.pathsuffix MatchesPath "/aclaraciones/*") and (request.verb = "GET")</Condition>
+            <Description/>
+            <Request/>
+            <Response/>
+        </Flow>
+        <Flow name="POST /aclaraciones/busquedas/estatus">
+            <Condition>(proxy.pathsuffix MatchesPath "/aclaraciones/busquedas/estatus") and (request.verb = "POST")</Condition>
+            <Description/>
+            <Request/>
+            <Response/>
+        </Flow>
+        <Flow name="POST /aclaraciones/busquedas/clientes">
+            <Condition>(proxy.pathsuffix MatchesPath "/aclaraciones/busquedas/clientes") and (request.verb = "POST")</Condition>
+            <Description/>
+            <Request/>
+            <Response/>
+        </Flow>
+    </Flows>
+    <PostFlow name="PostFlow">
+        <Request>
+            <!-- Begin Políticas -->
+            <Step>
+                <Name>JS-Valores-Trazabilidad</Name>
+            </Step>
+            <Step>
+                <Name>AM-Trazabilidad-Peticiones</Name>
+            </Step>
+            <!-- End Políticas -->
+            <!-- Begin Logging -->
+            <Step>
+                <Name>JS-ContextFlow</Name>
+            </Step>
+            <Step>
+                <Name>FC-Logging</Name>
+            </Step>
+            <!-- End Logging -->    
+        </Request>
+        <Response>
+            <!-- Begin Conext Flow -->
+            <Step>
+                <Name>JS-ContextFlow</Name>
+            </Step>
+            <!-- End Conext Flow -->
+            <!-- Begin Políticas -->
+            <!-- End Políticas -->
+        </Response>
+    </PostFlow>
+    <HTTPTargetConnection>
+        <Properties/>
+        <!-- Descomentar cuando se tenga el bankend disponible -->
+        <!--
+        <LoadBalancer>
+            <Server name="target-server-name"/>
+        </LoadBalancer>
+        <Path>BASEPATH</Path>
+        -->
+        <!-- Remover cuando se tenga el backend disponible -->
+        <URL>http://cosafinity-prod.apigee.net/v1/employees</URL>
+    </HTTPTargetConnection>
+</TargetEndpoint>

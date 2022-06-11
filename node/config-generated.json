@@ -1,0 +1,184 @@
+{
+    "mockDirectory": "./mock",
+    "quiet": false,
+    "port": "8000",
+    "latency": 50,
+    "logRequestHeaders": false,
+    "webServices": {
+        "aclaraciones": {
+            "latency": 25,
+            "verbs": [
+                "post"
+            ],
+            "switch": [
+                "idCanal",
+                "idOrigen",
+                "producto",
+                "subProducto",
+                "$.aclaracion.idTipo",
+                "$.aclaracion.numeroTarjeta",
+                "$.aclaracion.numeroCuenta",
+                "$.aclaracion.numeroMovimientos",
+                "$.aclaracion.comentario",
+                "$.aclaracion.montoTotal",
+                "$.aclaracion.recursoPago",
+                "$.aclaracion.observacion",
+                "$.aclaracion.conceptoBancaDigital",
+                "$.aclaracion.documentos[*].uri",
+                "$.aclaracion.documentos[*].idTipo",
+                "$.cliente.id",
+                "$.cliente.idClienteBanco",
+                "$.cliente.idEstatusCuenta",
+                "$.cliente.idEstatusTarjeta",
+                "$.movimientos[*].idTipo",
+                "$.movimientos[*].idEstatus",
+                "$.movimientos[*].numeroOperacion",
+                "$.movimientos[*].numeroAutorizacion",
+                "$.movimientos[*].concepto",
+                "$.movimientos[*].descripcion",
+                "$.movimientos[*].fecha",
+                "$.movimientos[*].hora",
+                "$.movimientos[*].monto",
+                "$.movimientos[*].montoReclamo",
+                "$.movimientos[*].codigoDivisa",
+                "$.movimientos[*].comercio.numeroAfiliacion",
+                "$.movimientos[*].comercio.giro",
+                "$.movimientos[*].documentos[*].uri",
+                "$.movimientos[*].documentos[*].idTipo",
+                "$.operador.perfil",
+                "$.operador.numeroEmpleado",
+                "$.operador.idSucursalSolicitud"
+            ],
+            "responses": {
+                "post": {
+                    "httpStatus": 400,
+                    "mockFile": "aclaraciones-POST/bad_request.json"
+                }
+            },
+            "switchResponses": {
+                "idCanal2idOrigen1productoTARJETA%20DEBITOsubProductoGUARDADITO%20KIDS$.aclaracion.idTipo485$.aclaracion.numeroTarjetaM9Zn5Gsv8ifeEbI9HA5wuQ$.aclaracion.numeroCuentaKsfus9Zn5Gsv8ifeEbI9HA5wuQac$.aclaracion.numeroMovimientos1$.aclaracion.comentarioMe%20realizaron%20el%20cargo%20y%20no%20fui%20al%20comercio$.aclaracion.montoTotal500.00$.aclaracion.recursoPago0$.aclaracion.observacionNo%20coincide%20la%20hora%20del%20movimiento$.aclaracion.conceptoBancaDigitalCompra%20con%20tarjeta%20movimiento%20pendiente$.aclaracion.documentos[*].uri01-100-002$.aclaracion.documentos[*].idTipo1$.cliente.id12345$.cliente.idClienteBanco456678$.cliente.idEstatusCuenta1$.cliente.idEstatusTarjeta0$.movimientos[*].idTipo1$.movimientos[*].idEstatus1$.movimientos[*].numeroOperacion123$.movimientos[*].numeroAutorizacion1234$.movimientos[*].conceptoPAGO%20EN%20COMERICIO$.movimientos[*].descripcionPago%20de%20comida%20en%20Mercado%20gastronomico$.movimientos[*].fecha25%2F09%2F2019$.movimientos[*].hora16%3A40%3A45$.movimientos[*].monto400.00$.movimientos[*].montoReclamo1525.52$.movimientos[*].codigoDivisaMXP$.movimientos[*].comercio.numeroAfiliacion123456$.movimientos[*].comercio.giro6011$.movimientos[*].documentos[*].uri01-100-002$.movimientos[*].documentos[*].idTipo1$.operador.perfilEjecutivo$.operador.numeroEmpleado782732$.operador.idSucursalSolicitud0172": {
+                    "httpStatus": 200,
+                    "mockFile": "aclaraciones-POST/ok.json"
+                },
+                "idCanal2idOrigen0productoTARJETA%20DEBITOsubProductoGUARDADITO%20KIDS$.aclaracion.idTipo485$.aclaracion.numeroTarjetaM9Zn5Gsv8ifeEbI9HA5wuQ$.aclaracion.numeroCuentaKsfus9Zn5Gsv8ifeEbI9HA5wuQac$.aclaracion.numeroMovimientos1$.aclaracion.comentarioMe%20realizaron%20el%20cargo%20y%20no%20fui%20al%20comercio$.aclaracion.montoTotal500.00$.aclaracion.recursoPago0$.aclaracion.observacionNo%20coincide%20la%20hora%20del%20movimiento$.aclaracion.conceptoBancaDigitalCompra%20con%20tarjeta%20movimiento%20pendiente$.aclaracion.documentos[*].uri01-100-002$.aclaracion.documentos[*].idTipo1$.cliente.id12345$.cliente.idClienteBanco456678$.cliente.idEstatusCuenta1$.cliente.idEstatusTarjeta0$.movimientos[*].idTipo1$.movimientos[*].idEstatus1$.movimientos[*].numeroOperacion123$.movimientos[*].numeroAutorizacion1234$.movimientos[*].conceptoPAGO%20EN%20COMERICIO$.movimientos[*].descripcionPago%20de%20comida%20en%20Mercado%20gastronomico$.movimientos[*].fecha25%2F09%2F2019$.movimientos[*].hora16%3A40%3A45$.movimientos[*].monto400.00$.movimientos[*].montoReclamo1525.52$.movimientos[*].codigoDivisaMXP$.movimientos[*].comercio.numeroAfiliacion123456$.movimientos[*].comercio.giro6011$.movimientos[*].documentos[*].uri01-100-002$.movimientos[*].documentos[*].idTipo1$.operador.perfilEjecutivo$.operador.numeroEmpleado782732$.operador.idSucursalSolicitud0172": {
+                    "httpStatus": 401,
+                    "mockFile": "aclaraciones-POST/autorizacion_badRequest.json"
+                },
+                "idCanalnfidOrigen1productoTARJETA%20DEBITOsubProductoGUARDADITO%20KIDS$.aclaracion.idTipo485$.aclaracion.numeroTarjetaM9Zn5Gsv8ifeEbI9HA5wuQ$.aclaracion.numeroCuentaKsfus9Zn5Gsv8ifeEbI9HA5wuQac$.aclaracion.numeroMovimientos1$.aclaracion.comentarioMe%20realizaron%20el%20cargo%20y%20no%20fui%20al%20comercio$.aclaracion.montoTotal500.00$.aclaracion.recursoPago0$.aclaracion.observacionNo%20coincide%20la%20hora%20del%20movimiento$.aclaracion.conceptoBancaDigitalCompra%20con%20tarjeta%20movimiento%20pendiente$.aclaracion.documentos[*].uri01-100-002$.aclaracion.documentos[*].idTipo1$.cliente.id12345$.cliente.idClienteBanco456678$.cliente.idEstatusCuenta1$.cliente.idEstatusTarjeta0$.movimientos[*].idTipo1$.movimientos[*].idEstatus1$.movimientos[*].numeroOperacion123$.movimientos[*].numeroAutorizacion1234$.movimientos[*].conceptoPAGO%20EN%20COMERICIO$.movimientos[*].descripcionPago%20de%20comida%20en%20Mercado%20gastronomico$.movimientos[*].fecha25%2F09%2F2019$.movimientos[*].hora16%3A40%3A45$.movimientos[*].monto400.00$.movimientos[*].montoReclamo1525.52$.movimientos[*].codigoDivisaMXP$.movimientos[*].comercio.numeroAfiliacion123456$.movimientos[*].comercio.giro6011$.movimientos[*].documentos[*].uri01-100-002$.movimientos[*].documentos[*].idTipo1$.operador.perfilEjecutivo$.operador.numeroEmpleado782732$.operador.idSucursalSolicitud0172": {
+                    "httpStatus": 404,
+                    "mockFile": "aclaraciones-POST/not_found.json"
+                },
+                "idCanalbadidOrigen1productoTARJETA%20DEBITOsubProductoGUARDADITO%20KIDS$.aclaracion.idTipo485$.aclaracion.numeroTarjetaM9Zn5Gsv8ifeEbI9HA5wuQ$.aclaracion.numeroCuentaKsfus9Zn5Gsv8ifeEbI9HA5wuQac$.aclaracion.numeroMovimientos1$.aclaracion.comentarioMe%20realizaron%20el%20cargo%20y%20no%20fui%20al%20comercio$.aclaracion.montoTotal500.00$.aclaracion.recursoPago0$.aclaracion.observacionNo%20coincide%20la%20hora%20del%20movimiento$.aclaracion.conceptoBancaDigitalCompra%20con%20tarjeta%20movimiento%20pendiente$.aclaracion.documentos[*].uri01-100-002$.aclaracion.documentos[*].idTipo1$.cliente.id12345$.cliente.idClienteBanco456678$.cliente.idEstatusCuenta1$.cliente.idEstatusTarjeta0$.movimientos[*].idTipo1$.movimientos[*].idEstatus1$.movimientos[*].numeroOperacion123$.movimientos[*].numeroAutorizacion1234$.movimientos[*].conceptoPAGO%20EN%20COMERICIO$.movimientos[*].descripcionPago%20de%20comida%20en%20Mercado%20gastronomico$.movimientos[*].fecha25%2F09%2F2019$.movimientos[*].hora16%3A40%3A45$.movimientos[*].monto400.00$.movimientos[*].montoReclamo1525.52$.movimientos[*].codigoDivisaMXP$.movimientos[*].comercio.numeroAfiliacion123456$.movimientos[*].comercio.giro6011$.movimientos[*].documentos[*].uri01-100-002$.movimientos[*].documentos[*].idTipo1$.operador.perfilEjecutivo$.operador.numeroEmpleado782732$.operador.idSucursalSolicitud0172": {
+                    "httpStatus": 500,
+                    "mockFile": "aclaraciones-POST/internal_server_error.json"
+                }
+            }
+        },        
+        "aclaraciones/:folio": {
+            "latency": 25,
+            "verbs": [
+                "get"
+            ],
+            "switch": [
+                "folio"
+            ],
+            "responses": {
+                "get": {
+                    "httpStatus": 400,
+                    "mockFile": "aclaraciones-folio-GET/error400.json"
+                }
+            },
+            "switchResponses": {
+                "folio098-201908131017594500": {
+                    "httpStatus": 200,
+                    "mockFile": "aclaraciones-folio-GET/ok.json"
+                },
+                "folioABC": {
+                    "httpStatus": 400,
+                    "mockFile": "aclaraciones-folio-GET/error400.json"
+                },
+                "folionf": {
+                    "httpStatus": 401,
+                    "mockFile": "aclaraciones-folio-GET/error401.json"
+                },
+                "foliobad": {
+                    "httpStatus": 404,
+                    "mockFile": "aclaraciones-folio-GET/error404.json"
+                },
+                "folionull": {
+                    "httpStatus": 500,
+                    "mockFile": "aclaraciones-folio-GET/error500.json"
+                }
+            }
+        },        
+        "aclaraciones/busquedas/estatus": {
+            "latency": 25,
+            "verbs": [
+                "post"
+            ],
+            "switch": [
+                "idEstatus",
+                "fechaInicio",
+                "fechaFin"
+            ],
+            "responses": {
+                "post": {
+                    "httpStatus": 400,
+                    "mockFile": "aclaraciones-Busquedas-Estatus-POST/bad_request.json"
+                }
+            },
+            "switchResponses": {
+                "idEstatus1fechaInicio10%2F09%2F2021fechaFin25%2F09%2F2021": {
+                    "httpStatus": 200,
+                    "mockFile": "aclaraciones-Busquedas-Estatus-POST/ok.json"
+                },
+                "idEstatusbadfechaInicio10%2F09%2F2021fechaFin25%2F09%2F2021": {
+                    "httpStatus": 401,
+                    "mockFile": "aclaraciones-Busquedas-Estatus-POST/autorizacion_badRequest.json"
+                },
+                "idEstatusnffechaInicio10%2F09%2F2021fechaFin25%2F09%2F2021": {
+                    "httpStatus": 404,
+                    "mockFile": "aclaraciones-Busquedas-Estatus-POST/not_found.json"
+                },
+                "idEstatusnullfechaInicio10%2F09%2F2021fechaFin25%2F09%2F2021": {
+                    "httpStatus": 500,
+                    "mockFile": "aclaraciones-Busquedas-Estatus-POST/internal_server_error.json"
+                }
+            }
+        },        
+        "aclaraciones/busquedas/clientes": {
+            "latency": 25,
+            "verbs": [
+                "post"
+            ],
+            "switch": [
+                "id",
+                "idClienteBanco"
+            ],
+            "responses": {
+                "post": {
+                    "httpStatus": 400,
+                    "mockFile": "aclaraciones-Busquedas-Clientes-POST/bad_request.json"
+                }
+            },
+            "switchResponses": {
+                "id1234idClienteBanco12345": {
+                    "httpStatus": 200,
+                    "mockFile": "aclaraciones-Busquedas-Clientes-POST/ok.json"
+                },
+                "idbadidClienteBancobad": {
+                    "httpStatus": 401,
+                    "mockFile": "aclaraciones-Busquedas-Clientes-POST/autorizacion_badRequest.json"
+                },
+                "idnfidClienteBanconf": {
+                    "httpStatus": 404,
+                    "mockFile": "aclaraciones-Busquedas-Clientes-POST/not_found.json"
+                },
+                "idabcidClienteBancoabc": {
+                    "httpStatus": 500,
+                    "mockFile": "aclaraciones-Busquedas-Clientes-POST/internal_server_error.json"
+                }
+            }
+        }
+    }
+}

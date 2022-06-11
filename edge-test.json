@@ -1,0 +1,45 @@
+{
+    "version": "1.0",
+    "orgConfig": {
+        "apiProducts": [
+            {
+                "name": "Producto-pruebas-operaciones-baz-plataforma-aclaraciones-administracion-aclaraciones-v1",
+                "displayName": "Producto-pruebas-operaciones-baz-plataforma-aclaraciones-administracion-aclaraciones-v1",
+                "description": "Producto-pruebas-operaciones-baz-plataforma-aclaraciones-administracion-aclaraciones-v1",
+                "apiResources": [],
+                "approvalType": "auto",
+                "attributes": [],
+                "environments": [
+                    "desarrollo"
+                ],
+                "proxies": [
+                    "operaciones-baz-plataforma-aclaraciones-administracion-aclaraciones-v1",
+                    "operaciones-baz-seguridad-v1"
+                ],
+                "scopes": []
+            }
+        ],
+        "developers": [
+            {
+                "attributes": [],
+                "email": "pruebasoperaciones-baz-plataforma-aclaraciones-administracion-aclaraciones-v1@gmail.com",
+                "firstName": "pruebasoperaciones-baz-plataforma-aclaraciones-administracion-aclaraciones-v1",
+                "lastName": "pruebasoperaciones-baz-plataforma-aclaraciones-administracion-aclaraciones-v1",
+                "userName": "pruebasoperaciones-baz-plataforma-aclaraciones-administracion-aclaraciones-v1"
+            }
+        ],
+        "developerApps": {
+            "pruebasoperaciones-baz-plataforma-aclaraciones-administracion-aclaraciones-v1@gmail.com": [
+                {
+                    "name": "pruebasoperaciones-baz-plataforma-aclaraciones-administracion-aclaraciones-v1",
+                    "apiProducts": [
+                        "BAZ GDA OAuth2 Client Credentials INT",
+                        "Producto-pruebas-operaciones-baz-plataforma-aclaraciones-administracion-aclaraciones-v1"
+                    ],
+                    "callbackUrl": "",
+                    "scopes": []
+                }
+            ]
+        }
+    }
+}

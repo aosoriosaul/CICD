@@ -1,0 +1,1421 @@
+swagger: "2.0"
+info:
+  version: "0.0.1"
+  title: API Administracion de Aclaraciones
+  description: |
+    Levantar y gestionar información relacionada a las aclaraciones en el sistema.
+
+host: dev-api.bancoazteca.com.mx:8080
+basePath: /operaciones-baz/plataforma-aclaraciones/administracion-aclaraciones/v1
+schemes:
+  - https
+produces:
+  - application/json
+
+securityDefinitions:
+  Bearer:
+    description: >
+      Para acceder a la API se debe pasar un token válido en todas las consultas.
+      La siguiente sintaxis se debe utilizar en el encabezado 'Authorization' :
+        Bearer: 2zzLJmBAtTNIU8nF8e8XbmDvaNGs
+    type: apiKey
+    name: Authorization
+    in: header
+
+security:
+  - Bearer: []
+
+paths:
+  /aclaraciones:
+    post:
+      summary: Alta de folios para aclaraciones 
+      description: Crear folios de aclaraciones solicitadas por el cliente.
+      tags:
+        - Altas
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: x-id-acceso
+          description: Identificador para el cifrado y descifrado de llaves asimetricas
+          required: true 
+          type: string 
+          default: "10000"
+        - in: header
+          name: x-ip-origen
+          description: Identificador para aws
+          required: true 
+          type: string
+          default: "192.168.1.200"
+        - in: body
+          name: request
+          description: Información de entrada
+          required: true
+          schema:
+            $ref:  "#/definitions/entradaAltaAclaraciones"
+      responses:
+        201:
+          description: Creado
+          schema:
+            $ref:  "#/definitions/respuestaAltaAclaraciones.201"
+          examples:
+            application/json: |-
+              {
+                "mensaje": "Operacion exitosa",
+                "folio": "awsapigeermczdev02-23426-49374-1",
+                "resultado": {
+                  "folioAclaracion": "100000000001"
+                }
+              }
+
+        400:
+          description: Entrada incorrecta
+          schema:
+            $ref: "#/definitions/error-aclaraciones.400"
+          examples:
+            application/json: |-
+              {
+                "codigo": "400.Operaciones-Baz-Plataforma-Aclaraciones-Administracion-Aclaraciones.4000",
+                "mensaje": "Parámetros de entrada con formato incorrecto",
+                "folio": "awsapigeermczdev02-23426-49374-1",
+                "info": "https://baz-developer.bancoazteca.com.mx/info#400.Operaciones-Baz-Plataforma-Aclaraciones-Administracion-Aclaraciones.4000",
+                "detalles": [
+                  "Formato incorrecto: cliente.id"
+                ]
+              }
+        
+        401:
+          description: Sin autorizacion
+          schema:
+            $ref: '#/definitions/error.401'
+          examples:
+            application/json: |-
+              {
+                "codigo": "401.Operaciones-Baz-Plataforma-Aclaraciones-Administracion-Aclaraciones.4001",
+                "mensaje": "No estas autorizado, favor de validar",
+                "folio" : "awsapigeermczdev02-23426-49374-1",
+                "info": "https://baz-developer.bancoazteca.com.mx/info#401.Operaciones-Baz-Plataforma-Aclaraciones-Administracion-Aclaraciones.4001",
+                "detalles": [
+                  "El x-id-acceso está expirado o no es válido, favor de solicitar uno nuevo"
+                ]
+              }
+
+        500:
+          description: Error inesperado
+          schema:
+            $ref: "#/definitions/error.500"
+          examples:
+            application/json: |-
+              {
+                "codigo": "500.Operaciones-Baz-Plataforma-Aclaraciones-Administracion-Aclaraciones.5000",
+                "mensaje": "Problemas al procesar su solicitud favor de contactar a su administrador",
+                "folio": "awsapigeermczdev02-23426-49374-1",
+                "info": "https://baz-developer.bancoazteca.com.mx/info#500.Operaciones-Baz-Plataforma-Aclaraciones-Administracion-Aclaraciones.5000",
+                "detalles": [
+                  "Error inesperado en la aplicación"
+                ]
+              }
+
+      security:
+        - Bearer: []
+
+  /aclaraciones/{folio}:
+    get:
+      summary: Obtener la información relacionada a un folio creado en el proceso de aclaración.
+      description: Se envía el folio generado para obtener toda su información.
+      tags:
+        - Consultas
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: x-id-acceso
+          description: Identificador para el cifrado y descifrado de llaves asimetricas
+          required: true 
+          type: string 
+          default: "10000"
+        - in: header
+          name: x-ip-origen
+          description: Identificador para aws
+          required: true
+          type: string
+          default: "192.168.1.200"
+        - in: path
+          name: folio
+          description: Identificador del negocio que se quiere consultar
+          required: true 
+          type: string 
+          default: "098-201908131017594500"
+
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/respuestaConsultaFolio.200"
+          examples:
+            application/json: 
+              {
+                "mensaje": "Detalle del folio",
+                "folio": "awsapigeermczdev02-23426-49374-1",
+                "resultado": {
+                    "folio": "10000001",
+                    "motivo": "OPERACION RECHAZADA",
+                    "montoReclamado": "149.00",
+                    "comision": "0.00",
+                    "producto": "TARJETA DE DEBITO / TARJETA",
+                    "tipoAclaracion": "Retenciones",
+                    "tipificacion": "Cargo no reconocido",
+                    "idSucursal": "9999",
+                    "nombreSucursal": "Coyoacan",
+                    "comentario": "Esto es una prueba de",
+                    "estatus": "FINALIZADA",
+                    "tiempoResolucion": 6,
+                    "fechaPromesa": "06/10/2021",
+                    "fechaCreacion": "30/09/2021",
+                    "fechaResolucion": "30/09/2021",
+                    "horaCreacion": "23:52:03",
+                    "comentarioResponsable": "PRUEBAS SISTEMAS",
+                    "movimientos": [{
+                            "tipoOperacion": "COMPRA",
+                            "monto": "149.00",
+                            "descripcionComercio": "AMAZON MX, MEXICO DF",
+                            "canalOperacion": "1",
+                            "fechaImporte": "30/09/2021",
+                            "fallo": "NO PROCEDENTE"
+                        }
+                    ],
+                    "operador": {
+                        "nombre": "PROCESO AUTOMATICO",
+                        "accion": "FINALIZACIÓN"
+                    },
+                    "documentos": [{
+                            "idTipo": "1",
+                            "uri": "01-100-002"
+                        }
+                    ],
+                    "cliente": {
+                        "id": "09238490234",
+                        "numeroCuenta": "xxxx-xxxx-xxxx-3123",
+                        "numeroTarjeta": "xxxx-xxxx-xxxx-0213",
+                        "estatusTarjeta": "ACTIVA"
+                    }
+                }
+              }
+        400:
+          description: Entrada incorrecta
+          schema:
+            $ref:  "#/definitions/error-folio.400"
+          examples:
+            application/json: |-
+              {
+                "codigo": "400.Operaciones-Baz-Plataforma-Aclaraciones-Administracion-Aclaraciones.4000",
+                "mensaje": "Parámetros de entrada con formato incorrecto",
+                "folio": "awsapigeermczdev02-23426-49374-1",
+                "info": "https://baz-developer.bancoazteca.com.mx/info#400.Operaciones-Baz-Plataforma-Aclaraciones-Administracion-Aclaraciones.4000",
+                "detalles": [
+                  "Formato incorrecto: folio"
+                ]
+              }
+              
+        401:
+          description: Sin autorizacion
+          schema:
+            $ref: '#/definitions/error.401'
+          examples:
+            application/json: |-
+              {
+                "codigo": "401.Operaciones-Baz-Plataforma-Aclaraciones-Administracion-Aclaraciones.4001",
+                "mensaje": "No estas autorizado, favor de validar",
+                "folio" : "awsapigeermczdev02-23426-49374-1",
+                "info": "https://baz-developer.bancoazteca.com.mx/info#401.Operaciones-Baz-Plataforma-Aclaraciones-Administracion-Aclaraciones.4001",
+                "detalles": [
+                  "El x-id-acceso está expirado o no es válido, favor de solicitar uno nuevo"
+                ]
+              }
+
+        404:
+          description: No se encontraron recursos
+          schema:
+            $ref:  "#/definitions/error-folio.404"
+          examples:
+            application/json: |-
+              {
+                "codigo": "404.Operaciones-Baz-Plataforma-Aclaraciones-Administracion-Aclaraciones.4004",
+                "mensaje": "Recurso no encontrado",
+                "folio": "awsapigeermczdev02-23426-49374-1",
+                "info": "https://baz-developer.bancoazteca.com.mx/info#404.Operaciones-Baz-Plataforma-Aclaraciones-Administracion-Aclaraciones.4004",
+                "detalles": [
+                  "No se encontró información para el folio - 10000001"
+                ]
+              }
+
+        500:
+          description: Error inesperado
+          schema:
+            $ref: "#/definitions/error.500"
+          examples:
+            application/json: |-
+              {
+                "codigo": "500.Operaciones-Baz-Plataforma-Aclaraciones-Administracion-Aclaraciones.5000",
+                "mensaje": "Problemas al procesar su solicitud favor de contactar a su administrador",
+                "folio": "awsapigeermczdev02-23426-49374-1",
+                "info": "https://baz-developer.bancoazteca.com.mx/info#500.Operaciones-Baz-Plataforma-Aclaraciones-Administracion-Aclaraciones.5000",
+                "detalles": [
+                    "Error inesperado en la aplicación"
+                ]
+              }
+
+      security:
+        - Bearer: []
+
+  /aclaraciones/busquedas/estatus:
+    post:
+      summary: Obtener folios por estatus dentro de un rango de fechas.
+      description: Se envía el folio generado para obtener toda su información.
+      tags:
+        - Consultas
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: x-id-acceso
+          description: Identificador para el cifrado y descifrado de llaves asimetricas
+          required: true 
+          type: string 
+          default: "10000"
+        - in: header
+          name: x-ip-origen
+          description: Identificador para aws
+          required: true 
+          type: string
+          default: "192.168.1.200"
+        - in: body
+          name: request
+          description: Información de entrada
+          required: true
+          schema:
+            $ref:  "#/definitions/entradaEstatus"
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/respuestaEstatus.200"
+          examples:
+            application/json: |-
+              {
+                "mensaje": "Operacion exitosa",
+                "folio": "awsapigeermczdev02-23426-49374-1",
+                "resultado": 
+                {
+                  "aclaraciones": 
+                  [
+                    {
+                      "folio": "100000000001",
+                      "numeroCuenta": "67741388158481",
+                      "numeroTarjeta": "4027664177696022",
+                      "motivo": "OPERACION RECHAZADA",
+                      "montoTotal": "99",
+                      "producto": "TARJETA DE DEBITO",
+                      "concepto": "COMPRA EN ESTABLECIMIENTO",
+                      "clasificacion": "CARGO INDEBIDO",
+                      "dictamen": "NO PROCEDE",
+                      "fechaCreacion": "2021-06-29",
+                      "fechaResolucion": "2021-06-30",
+                      "estatus": "EN PROCESO"
+                    }
+                  ]
+                }
+              }
+        
+        400:
+          description: Entrada incorrecta
+          schema:
+            $ref:  "#/definitions/error-estatus.400"
+          examples:
+            application/json: |-
+              {
+                "codigo": "400.Operaciones-Baz-Plataforma-Aclaraciones-Administracion-Aclaraciones.4000",
+                "mensaje": "Parámetros de entrada con formato incorrecto",
+                "folio": "awsapigeermczdev02-23426-49374-1",
+                "info": "https://baz-developer.bancoazteca.com.mx/info#400.Operaciones-Baz-Plataforma-Aclaraciones-Administracion-Aclaraciones.4000",
+                "detalles": [
+                  "Formato incorrecto: fechaInicio"
+                ]
+              }
+
+        401:
+          description: Sin autorizacion
+          schema:
+            $ref: '#/definitions/error.401'
+          examples:
+            application/json: |-
+              {
+                "codigo": "401.Operaciones-Baz-Plataforma-Aclaraciones-Administracion-Aclaraciones.4001",
+                "mensaje": "No estas autorizado, favor de validar",
+                "folio" : "awsapigeermczdev02-23426-49374-1",
+                "info": "https://baz-developer.bancoazteca.com.mx/info#401.Operaciones-Baz-Plataforma-Aclaraciones-Administracion-Aclaraciones.4001",
+                "detalles": [
+                  "El x-id-acceso está expirado o no es válido, favor de solicitar uno nuevo"
+                ]
+              }
+              
+        404:
+          description: Entrada incorrecta
+          schema:
+            $ref:  "#/definitions/error-estatus.404"
+          examples:
+            application/json: |-
+              {
+                "codigo": "404.Operaciones-Baz-Plataforma-Aclaraciones-Administracion-Aclaraciones.4004",
+                "mensaje": "Parámetros de entrada con formato incorrecto",
+                "folio": "awsapigeermczdev02-23426-49374-1",
+                "info": "https://baz-developer.bancoazteca.com.mx/info#404.Operaciones-Baz-Plataforma-Aclaraciones-Administracion-Aclaraciones.4004",
+                "detalles": [
+                    "No se encontró información para el estatus - 345"
+                ]
+              }
+
+        500:
+          description: Error inesperado
+          schema:
+            $ref: "#/definitions/error.500"
+          examples:
+            application/json: |-
+              {
+                "codigo": "500.Operaciones-Baz-Plataforma-Aclaraciones-Administracion-Aclaraciones.5000",
+                "mensaje": "Problemas al procesar su solicitud favor de contactar a su administrador",
+                "folio": "awsapigeermczdev02-23426-49374-1",
+                "info": "https://baz-developer.bancoazteca.com.mx/info#500.Operaciones-Baz-Plataforma-Aclaraciones-Administracion-Aclaraciones.5000",
+                "detalles": [
+                    "Error inesperado en la aplicación"
+                ]
+              }
+
+      security:
+        - Bearer: []
+
+  /aclaraciones/busquedas/clientes:
+    post:
+      summary: Obtener los folios relacionados al cliente
+      description: Se envía el identificador del cliente para obtener toda su información.
+      tags:
+        - Consultas
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: x-id-acceso
+          description: Identificador para el cifrado y descifrado de llaves asimetricas
+          required: true 
+          type: string 
+          default: "10000"
+        - in: header
+          name: x-ip-origen
+          description: Identificador para aws
+          required: true 
+          type: string
+          default: "192.168.1.200"
+        - in: body
+          name: request
+          description: |-
+            Información de entrada
+            `Importante`: Solo es necesario por lo menos alguno de los dos datos dentro de este objeto.
+          required: true
+          schema:
+            $ref:   "#/definitions/entradaConsultaFoliosPorIdCliente"
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref:  "#/definitions/respuestaConsultaFoliosPorIdCliente.200"
+          examples:
+            application/json: |-
+              {
+                "mensaje": "Operacion exitosa",
+                "folio": "awsapigeermczdev02-23426-49374-1",
+                "resultado": {
+                  "aclaraciones": [
+                    {
+                      "idCanal": 2,
+                      "folio": "100000000001",
+                      "numeroCuenta": "67741388158481",
+                      "numeroTarjeta": "4027664177696022",
+                      "motivo": "OPERACION RECHAZADA",
+                      "montoTotal": "99",
+                      "producto": "TARJETA DE DEBITO",
+                      "concepto": "COMPRA EN ESTABLECIMIENTO",
+                      "clasificacion": "CARGO INDEBIDO",
+                      "dictamen": "NO PROCEDE",
+                      "fechaCreacion": "2021-06-29",
+                      "fechaResolucion": "2021-06-30"
+                    }
+                  ]
+                }
+              } 
+
+        
+        400:
+          description: Entrada incorrecta
+          schema:
+            $ref:  "#/definitions/error-clientes.400"
+          examples:
+            application/json: |-
+              {
+                "codigo": "400.Operaciones-Baz-Plataforma-Aclaraciones-Administracion-Aclaraciones.4000",
+                "mensaje": "Parámetros de entrada con formato incorrecto",
+                "folio": "awsapigeermczdev02-23426-49374-1",
+                "info": "https://baz-developer.bancoazteca.com.mx/info#400.Operaciones-Baz-Plataforma-Aclaraciones-Administracion-Aclaraciones.4000",
+                "detalles": [
+                    "Formato incorrecto: id"
+                ]
+              }
+            
+        401:
+          description: Sin autorizacion
+          schema:
+            $ref: '#/definitions/error.401'
+          examples:
+            application/json: |-
+              {
+                "codigo": "401.Operaciones-Baz-Plataforma-Aclaraciones-Administracion-Aclaraciones.4001",
+                "mensaje": "No estas autorizado, favor de validar",
+                "folio" : "awsapigeermczdev02-23426-49374-1",
+                "info": "https://baz-developer.bancoazteca.com.mx/info#401.Operaciones-Baz-Plataforma-Aclaraciones-Administracion-Aclaraciones.4001",
+                "detalles": [
+                  "El x-id-acceso está expirado o no es válido, favor de solicitar uno nuevo"
+                ]
+              }
+
+        404:
+          description: Entrada incorrecta
+          schema:
+            $ref:   "#/definitions/error-clientes.404"
+          examples:
+            application/json: |-
+              {
+                "codigo": "404.Operaciones-Baz-Plataforma-Aclaraciones-Administracion-Aclaraciones.4004",
+                "mensaje": "Parámetros de entrada con formato incorrecto",
+                "folio": "awsapigeermczdev02-23426-49374-1",
+                "info": "https://baz-developer.bancoazteca.com.mx/info#404.Operaciones-Baz-Plataforma-Aclaraciones-Administracion-Aclaraciones.4004",
+                "detalles": [
+                    "No se encontró información para el id - 123"
+                ]
+              }
+
+        500:
+          description: Error inesperado
+          schema:
+            $ref: "#/definitions/error.500"
+          examples:
+            application/json: |-
+              {
+                "codigo": "500.Operaciones-Baz-Plataforma-Aclaraciones-Administracion-Aclaraciones.5000",
+                "mensaje": "Problemas al procesar su solicitud favor de contactar a su administrador",
+                "folio": "awsapigeermczdev02-23426-49374-1",
+                "info": "https://baz-developer.bancoazteca.com.mx/info#500.Operaciones-Baz-Plataforma-Aclaraciones-Administracion-Aclaraciones.5000",
+                "detalles": ["Error inesperado en la aplicación"
+                ]
+              }
+
+      security:
+        - Bearer: []
+
+definitions:
+
+  entradaAltaAclaraciones:
+    type: object
+    required:
+      - cliente
+      - movimientos
+    properties:
+      idCanal:
+        type: integer
+        description: Aqui se identifica el tipo de aplicación que se esta usando para el alta de la aclaración.
+        example: 2
+      idOrigen:
+        type: integer
+        description: Identificador del canal que nos consume (Sucursal, Baz Digital, Sistema Aclaraciones, Nuevo portal Aclaraciones)
+        example: 1
+      producto:
+        type: string
+        description: Tipo de tarjeta del id
+        example: "TARJETA DEBITO"
+      subProducto:
+        type: string
+        description: Tipo de tarjeta que adquirio, subproducto.
+        example: "GUARDADITO KIDS"
+      aclaracion:
+        type: object
+        properties:
+          idTipo:
+            type: integer
+            description: Es el tipo de aclaracion que da de alta el cliente y viene de un catalogo.
+            example: 485
+          numeroTarjeta:
+            type: string
+            description: |-  
+              Número de numeroTarjeta del cliente a la que se realizo la retención, si el campo aclaracionConTarjeta viene en true se vuelve obligatorio este campo. 
+              `Importante:` Cifre el valor de éste campo con la llave pública (accesoPublico) obtenida del api de seguridad con el cifrado RSA/ECB/PKCS1Padding encoding UTF-8
+            example: "M9Zn5Gsv8ifeEbI9HA5wuQ"
+          numeroCuenta:
+            type: string
+            description: |-
+              Número de numeroCuenta del cliente a la que esta relacionada la tarjea en la que se realizo la retención, si el campo aclaracionConTarjeta viene en false se vuelve obligatorio este campo.
+              `Importante:` Cifre el valor de éste campo con la llave pública (accesoPublico) obtenida del api de seguridad con el cifrado RSA/ECB/PKCS1Padding encoding UTF-8
+            example: "Ksfus9Zn5Gsv8ifeEbI9HA5wuQac"
+          numeroMovimientos:
+            type: integer
+            description: Total de movimientos asociados al proceso de aclaración.
+            example: 1
+          comentario:
+            type: string
+            description: Comentarios del cliente sobre la aclaración que se esta realizando.
+            example: "Me realizaron el cargo y no fui al comercio"
+          montoTotal:
+            type: string
+            description: |-
+              Monto total de la aclaración, suma de todos los montos de los movimientos ingresados para reclamo.
+              `Importante:` Cifre el valor de éste campo con la llave pública (accesoPublico) obtenida del api de seguridad con el cifrado RSA/ECB/PKCS1Padding encoding UTF-8
+            example: "500.00"
+          recursoPago:
+            type: integer
+            description: Se describe el tipo de pago 1.-Tarjeta, 2.-Cuentas
+          observacion:
+            type: string
+            description: Comentario que da el analista al revisar la aclaración.
+            example: "No coincide la hora del movimiento"
+          conceptoBancaDigital:
+            type: string
+            description: Solo se llena cuando es pago por banca digital.
+            example: "Compra con tarjeta movimiento pendiente"
+          documentos:
+            type: array
+            items:
+              $ref: '#/definitions/entradaDocumentosAclaracion'
+              
+      cliente:
+        type: object
+        properties:
+          id:
+            type: string
+            description: |-
+              Identificador del cliente para el proceso de aclaración dentro de Operaciones aclaraciones. 
+              `Importante:` Cifre el valor de éste campo con la llave simétrica (accesoSimetrico) obtenida del api de seguridad con el cifrado AES/CBC/PKCS5Padding encoding UTF-8 y un código de autenticación (codigoAutentificacionHash), con el cifrado HmacSHA256 encoding UTF-8 que permitira asegurar la integridad de los datos y la autentificación del mensaje
+            example: "12345"
+          idClienteBanco:
+            type: string
+            format: int
+            description: |-
+              Numero de cliente.
+              `Importante:` Cifre el valor de éste campo con la llave simétrica (accesoSimetrico) obtenida del api de seguridad con el cifrado AES/CBC/PKCS5Padding encoding UTF-8 y un código de autenticación (codigoAutentificacionHash), con el cifrado HmacSHA256 encoding UTF-8 que permitira asegurar la integridad de los datos y la autentificación del mensaje
+            example: "456678"
+          idEstatusCuenta:
+            type: integer
+            format: int
+            description: Estatus de la numeroCuenta del cliente al momento de iniciar el proceso.
+            example: 1
+          idEstatusTarjeta:
+            type: integer
+            format: int
+            description: Estatus de la numeroTarjeta del cliente al momento de iniciar el proceso.
+      movimientos:
+        type: array
+        items: 
+          $ref: '#/definitions/movimientos'
+      operador:
+        type: object
+        properties:
+          numeroEmpleado:
+            type: string
+            description: |-
+              Número identificador del empleado. 
+              `Importante:` Cifre el valor de éste campo con la llave pública (accesoPublico) obtenida del api de seguridad con el cifrado RSA/ECB/PKCS1Padding encoding UTF-8
+            example: "782732"
+          idSucursalSolicitud:
+            type: string
+            description: Sucursal en la que se realizó el proceso de aclaración 
+            example: "0172"
+          perfil:
+            type: string
+            description: |-
+              Perfil del empleado que realizó el proceso de aclaración.
+              `Importante:` Cifre el valor de éste campo con la llave pública (accesoPublico) obtenida del api de seguridad con el cifrado RSA/ECB/PKCS1Padding encoding UTF-8
+            example: "Ejecutivo"
+
+  entradaMovimientosAclaracionFolio:
+    type: object
+    required:
+      - monto
+    properties:
+      tipoOperacion:
+        type: string
+        description: "Descripcion del tipo de proceso"
+        example: "COMPRA"
+      monto:
+        type: string
+        description: |-
+          Monto del movmiento de la aclaracion
+          `Importante`: Descifre el valor de éste campo con la llave privada (accesoPrivado) obtenida del api de seguridad con el cifrado RSA/ECB/PKCS1Padding encoding UTF-8
+        example: "149.00"
+      descripcionComercio:
+        type: string
+        description: Se detalla el comercio el cual realizo el cargo
+        example: "AMAZON MX, MEXICO DF"
+      canalOperacion:
+        type: string
+        description: Tipo de la operación que realiza el comercio y pueden ser 1,2,3.
+        example: "2"
+      fechaImporte:
+        type: string
+        format: date
+        description: Fecha en la que se retuvo el importe
+        example: "30/09/2021"
+      fallo:
+        type: string
+        description: Estatus de la resolucion ya sea aceptacion o no procedente
+        example: "NO PROCEDENTE"
+
+  entradaConsultaFoliosPorIdCliente:
+    type: object
+    required:
+      - idCliente
+      - idClienteBanco
+    properties: 
+      idCliente:
+        type: string
+        description: |- 
+          Identificador del cliente para consultar folios creados.
+          `Importante:` Cifre el valor de éste campo con la llave pública (accesoPublico) obtenida del api de seguridad con el cifrado RSA/ECB/PKCS1Padding encoding UTF-8
+        example: "1234"
+      idClienteBanco:
+        type: string
+        description: |-
+          Identificador Banco Alnova
+          `Importante:` Cifre el valor de éste campo con la llave pública (accesoPublico) obtenida del api de seguridad con el cifrado RSA/ECB/PKCS1Padding encoding UTF-8
+        example: "12345"
+
+  entradaEstatus:
+    type: object
+    required:
+      - idEstatus
+      - fechaInicio
+      - fechaFin
+    properties:
+      idEstatus:
+        type: integer
+        format: int
+        description: Estatus por el cual necesita buscar la información de aclaracinoes generadas 
+        example: 1
+      fechaInicio:
+        type: string
+        format: date
+        description: Fecha inicial en la que se necesita buscar información de las aclaraciones, esta fecha tiene que ser menor al campo fechaFin.
+        example: "10/09/2021"
+      fechaFin:
+        type: string
+        format:  date
+        description: Fecha final de la busqueda de la información de aclaraciones, esta fecha tiene que ser mayor al campo fechaInicio.
+        example: "25/09/2021"
+
+  entradaDocumentosAclaracion:
+      type: object
+      properties:
+        idTipo:
+          type: string
+          description: Tipo de documento
+          example: "1"
+        uri:
+          type: string
+          description: Nombre de los archivos cargados por el cliente.
+          example: "01-100-002"
+
+  entradaAclaracionesClientes:
+    properties:
+      folio:
+        type: string
+        description: Folio aclaracion
+        example: "100000000001"
+      numeroCuenta:
+        type: string
+        description: |-
+          Número de cuenta del cliente.
+          `Importante`: Descifre el valor de éste campo con la llave privada (accesoPrivado) obtenida del api de seguridad con el cifrado RSA/ECB/PKCS1Padding encoding UTF-8.
+        example: "67741388158481"
+      numeroTarjeta:
+        type: string
+        description: |-
+          Número de tarjeta del cliente.
+          `Importante`: Descifre el valor de éste campo con la llave privada (accesoPrivado) obtenida del api de seguridad con el cifrado RSA/ECB/PKCS1Padding encoding UTF-8.
+        example: "4027664177696022"
+      motivo:
+        type: string
+        description: Descripcion del tipo de la operacion si es aceptada o rechazada.
+        example: "OPERACION RECHAZADA"
+      montoTotal:
+        type: string
+        description: |-
+          Es el monto total de las aclaraciones realizadas por el cliente.
+          `Importante`: Descifre el valor de éste campo con la llave privada (accesoPrivado) obtenida del api de seguridad con el cifrado RSA/ECB/PKCS1Padding encoding UTF-8.
+        example: "99"
+      producto:
+        type: string
+        description: Tipo de producto en el cual se realizo el cobro como Tarjeta de credito, Debito, etc.
+        example: "TARJETA DE DEBITO"
+      concepto:
+        type: string
+        description: Descripcion del tipo de cargo realizado
+        example: "COMPRA ESTABLECIMIENTO"
+      clasificacion:
+        type: string
+        description: Tipo de cargo realizado.
+        example: "CARGO INDEBIDO"
+      dictamen:
+        type: string
+        description: Resultado de la aclaración
+        example: "NO PROCEDE"
+      fechaCreacion:
+        type: string
+        format: date
+        description: Fecha en la que se realiza el proceso de aclaración
+        example: "29/06/2021"
+      fechaResolucion:
+        type: string
+        format: date
+        description: Fecha de la resolucion de la aclaracion
+        example: "30/06/2021"
+      estatus:
+        type: string
+        description: Estatus del folio aclaración que se genero.
+        example: "EN PROCESO"
+
+  movimientos:
+    type: object
+    properties:
+      idTipo:
+        type: integer
+        description: Identificador del tipo de movimiento o retención
+        example: 1
+      idEstatus:
+        type: integer
+        description: Estatus actual del movimiento o retención, al momento de levantar la aclaracion puede ir sin el estatus
+        example: 1
+      numeroOperacion:
+        type: string
+        description: |-
+          Número de la operación con al que se relaciona el movimiento o retención.
+          `Importante:` Cifre el valor de éste campo con la llave pública (accesoPublico) obtenida del api de seguridad con el cifrado RSA/ECB/PKCS1Padding encoding UTF-8
+        example: "123"
+      numeroAutorizacion:
+        type: string
+        description: |-
+          Número identificador de autorización relacionada al movimiento o retención.
+          `Importante:` Cifre el valor de éste campo con la llave pública (accesoPublico) obtenida del api de seguridad con el cifrado RSA/ECB/PKCS1Padding encoding UTF-8
+        example: "1234"
+      concepto:
+        type: string
+        description: Concepto por el que se realizó el movimiento o retención
+        example: "PAGO EN COMERICIO"
+      descripcion:
+        type: string
+        description: Descripción por el que se realizó el movimiento o retención
+        example: "Pago de comida en Mercado gastronomico"
+      fecha:
+        type: string
+        format: date
+        description: Feha en la que se realizó el movimiento o retención reclamado
+        example: "25/09/2019"
+      hora:
+        type: string
+        format: time
+        description: Hora en la que se realizó el movimiento o retención reclamado
+        example: "16:40:45"
+      monto:
+        type: string
+        description: |-
+          Monto del movimiento.
+          `Importante:` Cifre el valor de éste campo con la llave pública (accesoPublico) obtenida del api de seguridad con el cifrado RSA/ECB/PKCS1Padding encoding UTF-8
+        example: "400.00"
+      montoReclamo:
+        type: string
+        format: double
+        description: |-
+          Monto del movimiento o retención reclamado y puede ser un porcentaje del monto, puede ser menor o igual pero no mayor.
+          `Importante:` Cifre el valor de éste campo con la llave pública (accesoPublico) obtenida del api de seguridad con el cifrado RSA/ECB/PKCS1Padding encoding UTF-8
+        example: "1525.52"
+      codigoDivisa:
+        type: string
+        description: Divisa en la que se realizó el movimiento o retención
+        example: "MXP"
+      comercio:
+        type: object
+        properties:
+          numeroAfiliacion:
+            type: integer
+            description: Numero de afiliacion del comercio, unico por comercio.
+            example: 123456
+          giro:
+            type: integer
+            description: Giro del comercio donde se realizo la retención y viene de un catalogo.
+            format: "###########"
+            maxLength: 11
+            example: 6011
+      documentos:
+            type: array
+            items:
+              $ref: '#/definitions/entradaDocumentosAclaracion'
+
+  respuestaAltaAclaraciones.201: 
+    type: object
+    required:
+      - mensaje
+      - folio
+      - resultado
+    properties:
+      mensaje:
+        type: string
+        description: Descripción de la operación
+        example: Operacion exitosa
+      folio:
+        type: string
+        description: Número de folio de la operación
+        example: "098-201908131017594500"
+      resultado:
+        type: object
+        properties:
+          folioAclaracion:
+            type: string
+            minLength: 12
+            maxLength: 12
+            description: Folio generado al dar de alta la aclaracion solicitada por el cliente
+            example: "100000000001"
+
+  respuestaConsultaFoliosPorIdCliente.200:
+    type: object
+    required:
+      - folio
+      - mensaje
+      - resultado
+    properties:
+      mensaje:
+        type: string
+        description: Descripción de la operación
+        example: "Operacion exitosa"
+      folio:
+        type: string
+        description: Número de folio de la operación
+        example: "098-201908131017594500"
+      resultado:
+        type: object
+        properties:
+          aclaraciones:
+            type: array
+            items:
+              $ref: '#/definitions/respuestaAclaracionesClientes'
+  
+  respuestaConsultaFolio.200:
+    type: object
+    required:
+      - mensaje
+      - folio
+      - resultado
+    properties:
+      mensaje:
+        type: string
+        description: Descripción de la operación
+        example: "Operacion exitosa"
+      folio:
+        type: string
+        description: Número de folio de la operación
+        example: "098-201908131017594500"
+      resultado:
+        type: object
+        properties:
+          folio:
+            type: string
+            minLength: 12
+            maxLength: 12
+            description: Folio generado al dar de alta la aclaracion solcitada por el cliente
+            example: "100000000001"
+          motivo:
+            type: string
+            description: Motivo de la aclaracion
+            example: "OPERACION RECHAZADA"
+          montoReclamado:
+            type: string
+            description: |-
+              Monto de la aclaracion
+              `Importante`: Descifre el valor de éste campo con la llave privada (accesoPrivado) obtenida del api de seguridad con el cifrado RSA/ECB/PKCS1Padding encoding UTF-8
+            example: "149.00"
+          comision:
+            type: string
+            description: |-
+              Monto de la comision
+              `Importante`: Descifre el valor de éste campo con la llave privada (accesoPrivado) obtenida del api de seguridad con el cifrado RSA/ECB/PKCS1Padding encoding UTF-8
+            example: "0.00"
+          producto:
+            type: string
+            description: |-
+              Nombre del producto involucrado en la aclaracion tipo de tarjeta
+            example: "TARJETA DE DEBITO / TARJETA"
+          tipoAclaracion:
+            type: string
+            description: "Se describe el tipo de aclaracion del monto cobrado"
+            example: "Retenciones"
+          tipificacion:
+            type: string
+            description: Descripcion del tipo de cargo cobrado.
+            example: "Cargo no reconocido"
+          idSucursal:
+            type: string
+            description: "Sucursal donde se obtuvo la tarjeta del cuentabiente"
+            example: "9999"
+          nombreSucursal:
+            type: string
+            description: Nombre de la sucursal
+            example: "Coyoacan"
+          comentario:
+            type: string
+            description: Comentario de los sucesos de la aclaracion
+            example: "Esto es una prueba de"
+          estatus:
+            type: string
+            description: Estatus de la aclaración, de acuerdo al catalogo de estatus aclaraciones
+            example: "FINALIZADA"
+          tiempoResolucion:
+            type: integer
+            description: Tiempo que se da para terminar la aclaracion y dar un resolucion al cliente en un numero determinado de días          
+            example: 6
+          fechaPromesa:
+            type: string
+            format: date
+            description: Fecha en la que se atendera y culminara la aclaracion
+            example: "06/10/2021"
+          fechaCreacion:
+            type: string
+            format: date
+            description: Fecha en la que aplico el movimientos
+            example: "06/09/2021"
+          fechaResolucion:
+            type: string
+            format: date
+            description: Fecha real en la que se le da al cliente una resolucion
+            example: "30/09/2021"
+          horaCreacion:
+            type: string
+            format: time
+            description: Hora en la que se crea la aclaracion
+            example: "23:52:03"
+          comentarioResponsable:
+            type: string
+            description: Espacio para poner un comentario de la aclaracion del responsable de la aclaración en curso
+            example: "PRUEBAS SISTEMAS"
+          movimientos:
+                type: array
+                items:
+                  $ref: '#/definitions/entradaMovimientosAclaracionFolio'
+
+          operador:
+            type: object
+            properties:
+              nombre:
+                type: string
+                description: Nombre del proceso que realizo el cobro
+                example: "PROCESO AUTOMATICO"
+              accion:
+                type: string
+                description: Acción que realiza el operador, en este caso será el proceso automatico.
+                example: "FINALIZACIÓN"
+          documentos:
+            type: array
+            items:
+              $ref: '#/definitions/entradaDocumentosAclaracion'
+          cliente: 
+            type: object
+            properties:
+              id:
+                type: string
+                description: |-
+                  Cliente unico
+                  `Importante`: Descifre el valor de éste campo con la llave privada (accesoPrivado) obtenida del api de seguridad con el cifrado RSA/ECB/PKCS1Padding encoding UTF-8
+                example: "09238490234"
+              numeroCuenta:
+                type: string
+                description: |-
+                  Numero de cuenta
+                  `Importante`: Descifre el valor de éste campo con la llave privada (accesoPrivado) obtenida del api de seguridad con el cifrado RSA/ECB/PKCS1Padding encoding UTF-8
+                example: "xxxx-xxxx-xxxx-3123"
+              numeroTarjeta:
+                type: string
+                description: |-
+                  Numero de tarjeta
+                  `Importante`: Descifre el valor de éste campo con la llave privada (accesoPrivado) obtenida del api de seguridad con el cifrado RSA/ECB/PKCS1Padding encoding UTF-8
+                example: "xxxx-xxxx-xxxx-0213"
+              estatusTarjeta:
+                type: string
+                description: Se describe el estatus actual de la tarjeta del cliente.
+                example: "ACTIVA"
+
+  respuestaEstatus.200:
+    type: object
+    required:
+      - mensaje
+      - folio
+      - resultado
+    properties:
+      mensaje:
+        type: string
+        description: Descripción de la operación
+        example: "Operacion exitosa"
+      folio:
+        type: string
+        description: Número de folio de la operación
+        example: "098-201908131017594500"
+      resultado:
+        type: object
+        properties: 
+          aclaraciones:
+            type: array
+            items:
+              $ref: '#/definitions/entradaAclaracionesClientes'
+  
+  respuestaAclaracionesClientes:
+    type: object
+    properties:
+      idCanal:
+        type: integer
+        description: Aqui se identifica el tipo de aplicación que se esta usando para el alta de la aclaración.
+        example: 2
+      folio:
+        type: string
+        minLength: 12
+        maxLength: 12
+        description: Folio
+        example: "100000000001"
+      numeroCuenta:
+        type: string
+        description: |-
+          Numero de cuenta del cliente
+          `Importante`: Descifre el valor de éste campo con la llave privada (accesoPrivado) obtenida del api de seguridad con el cifrado RSA/ECB/PKCS1Padding encoding UTF-8
+        example: "67741388158481"
+      numeroTarjeta:
+        type: string
+        description: |-
+          Numero de Tarjeta del cliente
+          `Importante`: Descifre el valor de éste campo con la llave privada (accesoPrivado) obtenida del api de seguridad con el cifrado RSA/ECB/PKCS1Padding encoding UTF-8
+        example: "4027664177696022"
+      motivo:
+        type: string
+        description: |-
+          Estatus de la aclaracion.
+        example: "OPERACION RECHAZADA"
+      montoTotal:
+        type: string
+        description: |-
+          Monto total de todas aclaraciones levantadas por el cliente
+          `Importante`: Descifre el valor de éste campo con la llave privada (accesoPrivado) obtenida del api de seguridad con el cifrado RSA/ECB/PKCS1Padding encoding UTF-8
+        example: "99"
+      producto:
+        type: string
+        description: Tipo de producto que se utilizo para el cargo hacia el cliente
+        example: "TARJETA DE DEBITO"
+      concepto:
+        type: string
+        description: Lugar donde se realizo el cargo.
+        example: "COMPRA EN ESTABLECIMIENTO"
+      clasificacion:
+        type: string
+        description: Descripcion del cargo a aclarar por el cliente
+        example: "CARGO INDEBIDO"
+      
+      dictamen:
+        type: string
+        description: Descripcion del estatus de la aclaracion.
+        example: "NO PROCEDE"
+      fechaCreacion:
+        type: string
+        format: date
+        description: Fecha en la que se realiza el proceso de aclaración
+        example: "29/06/2021"
+      fechaResolucion:
+        type: string
+        format: date
+        description: Fecha en la cual se obtiene un resultado de la aclaracion.
+        example: "30/06/2021"
+
+  error-aclaraciones.400:
+    type: object
+    properties:
+      codigo:
+        type: string
+        description: Código del error
+        example: "400.Operaciones-Baz-Plataforma-Aclaraciones-Administracion-Aclaraciones.4000"
+      mensaje:
+        type: string
+        description: Descripción del error
+        example: "Parámetros de entrada con formato incorrecto"
+      folio:
+        type: string
+        description: Número de folio de la operación
+        example: "awsapigeermczdev02-23426-49374-1"
+      info:
+        type: string
+        description: Rutas de ayuda para atender el error
+        example: "https://baz-developer.bancoazteca.com.mx/info#400.Operaciones-Baz-Plataforma-Aclaraciones-Administracion-Aclaraciones.4000"
+      detalles:
+        type: array
+        items:  
+            type: string
+            description: Descripción del error especifico.
+            example: "Formato incorrecto: cliente.id"
+
+  error-folio.400:
+    type: object
+    properties:
+      codigo:
+        type: string
+        description: Código del error
+        example: "400.Operaciones-Baz-Plataforma-Aclaraciones-Administracion-Aclaraciones.4000"
+      mensaje:
+        type: string
+        description: Descripción del error
+        example: "Parámetros de entrada con formato incorrecto"
+      folio:
+        type: string
+        description: Número de folio de la operación
+        example: "awsapigeermczdev02-23426-49374-1"
+      info:
+        type: string
+        description: Rutas de ayuda para atender el error
+        example: "https://baz-developer.bancoazteca.com.mx/info#400.Operaciones-Baz-Plataforma-Aclaraciones-Administracion-Aclaraciones.4000"
+      detalles:
+        type: array
+        items:  
+            type: string
+            description: Descripción del error especifico.
+            example: "Formato incorrecto: folio"
+
+  error-estatus.400:
+    type: object
+    properties:
+      codigo:
+        type: string
+        description: Código del error
+        example: "400.Operaciones-Baz-Plataforma-Aclaraciones-Administracion-Aclaraciones.4000"
+      mensaje:
+        type: string
+        description: Descripción del error
+        example: "Parámetros de entrada con formato incorrecto"
+      folio:
+        type: string
+        description: Número de folio de la operación
+        example: "awsapigeermczdev02-23426-49374-1"
+      info:
+        type: string
+        description: Rutas de ayuda para atender el error
+        example: "https://baz-developer.bancoazteca.com.mx/info#400.Operaciones-Baz-Plataforma-Aclaraciones-Administracion-Aclaraciones.4000"
+      detalles:
+        type: array
+        items:  
+            type: string
+            description: Descripción del error especifico.
+            example: "Formato incorrecto: fechaInicio"
+
+  error-clientes.400:
+    type: object
+    properties:
+      codigo:
+        type: string
+        description: Código del error
+        example: "400.Operaciones-Baz-Plataforma-Aclaraciones-Administracion-Aclaraciones.4000"
+      mensaje:
+        type: string
+        description: Descripción del error
+        example: "Parámetros de entrada con formato incorrecto"
+      folio:
+        type: string
+        description: Número de folio de la operación
+        example: "awsapigeermczdev02-23426-49374-1"
+      info:
+        type: string
+        description: Rutas de ayuda para atender el error
+        example: "https://baz-developer.bancoazteca.com.mx/info#400.Operaciones-Baz-Plataforma-Aclaraciones-Administracion-Aclaraciones.4000"
+      detalles:
+        type: array
+        items:  
+            type: string
+            description: Descripción del error especifico.
+            example: "Formato incorrecto: id"
+
+  error.401:
+      type: object
+      properties:  
+        codigo:
+          type: string
+          description: Código del error
+          example: "401.Operaciones-Baz-Plataforma-Aclaraciones-Administracion-Aclaraciones.4001"
+        mensaje:
+          type: string
+          description: Descripción del error
+          example: "No estas autorizado, favor de validar"
+        folio:
+          type: string
+          description: Número de folio de la operación
+          example: "awsapigeermczdev02-23426-49374-1"
+        info:
+          type: string
+          description: Rutas de ayuda para atender el error
+          example: "https://baz-developer.bancoazteca.com.mx/info#401.Operaciones-Baz-Plataforma-Aclaraciones-Administracion-Aclaraciones.4001"
+        detalles:
+          type: array
+          items:
+            type: string
+            description: Muestra informacion detallada del error
+            example: "El x-id-acceso está expirado o no es válido, favor de solicitar uno nuevo"
+
+  error-folio.404:
+    type: object
+    properties:
+      codigo:
+        type: string
+        description: Código del error
+        example: "404.Operaciones-Baz-Plataforma-Aclaraciones-Administracion-Aclaraciones.4004"
+      mensaje:
+        type: string
+        description: Descripción del error
+        example: "Recurso no encontrado"
+      folio:
+        type: string
+        description: Número de folio de la operación
+        example: "awsapigeermczdev02-23426-49374-1"
+      info:
+        type: string
+        description: Rutas de ayuda para atender el error
+        example: "https://baz-developer.bancoazteca.com.mx/info#404.Operaciones-Baz-Plataforma-Aclaraciones-Administracion-Aclaraciones.4004"
+      detalles:
+        type: array
+        items: 
+          type: string
+          description: Descripción del error especifico.
+          example: "No se encontró información para el folio - 10000001"
+
+  error-estatus.404:
+    type: object
+    properties:
+      codigo:
+        type: string
+        description: Código del error
+        example: "404.Operaciones-Baz-Plataforma-Aclaraciones-Administracion-Aclaraciones.4004"
+      mensaje:
+        type: string
+        description: Descripción del error
+        example: "Recurso no encontrado"
+      folio:
+        type: string
+        description: Número de folio de la operación
+        example: "awsapigeermczdev02-23426-49374-1"
+      info:
+        type: string
+        description: Rutas de ayuda para atender el error
+        example: "https://baz-developer.bancoazteca.com.mx/info#404.Operaciones-Baz-Plataforma-Aclaraciones-Administracion-Aclaraciones.4004"
+      detalles:
+        type: array
+        items: 
+          type: string
+          description: Descripción del error especifico.
+          example: "No se encontró información para el estatus - 345"
+
+  error-clientes.404:
+    type: object
+    properties:
+      codigo:
+        type: string
+        description: Código del error
+        example: "404.Operaciones-Baz-Plataforma-Aclaraciones-Administracion-Aclaraciones.4004"
+      mensaje:
+        type: string
+        description: Descripción del error
+        example: "Recurso no encontrado"
+      folio:
+        type: string
+        description: Número de folio de la operación
+        example: "awsapigeermczdev02-23426-49374-1"
+      info:
+        type: string
+        description: Rutas de ayuda para atender el error
+        example: "https://baz-developer.bancoazteca.com.mx/info#404.Operaciones-Baz-Plataforma-Aclaraciones-Administracion-Aclaraciones.4004"
+      detalles:
+        type: array
+        items: 
+          type: string
+          description: Descripción del error especifico.
+          example: "No se encontró información para el id - 123"
+
+  error.500:
+    type: object
+    properties:
+      codigo:
+        type: string
+        description: Código del error
+        example: "500.Operaciones-Baz-Plataforma-Aclaraciones-Administracion-Aclaraciones.5000"
+      mensaje:
+        type: string
+        description: Descripción del error
+        example: "Problemas al procesar su solicitud favor de contactar a su administrador"
+      folio:
+        type: string
+        description: Número de folio de la operación
+        example: "awsapigeermczdev02-23426-49374-1"
+      info:
+        type: string
+        description: Rutas de ayuda para atender el error
+        example: "https://baz-developer.bancoazteca.com.mx/info#500.Operaciones-Baz-Plataforma-Aclaraciones-Administracion-Aclaraciones.5000"
+      detalles:
+        type: array
+        items:
+          type: string
+          description: Descripción del error especifico.
+          example: "Error inesperado en la aplicación"
+            
+  summary:
+    type: object
+    properties: 
+      api-name:
+        type: string
+        description: Realiza el alta de alcaraciones y cargos no reconocidos por los clientes asi como busqueda de cada aclaracion.
+        example: "Gestion-Aclaraciones-v1"     
+      aclaraciones-post:
+        type: object
+        properties:
+          displayName:
+            type: string
+            description: Crea folio para cargos no reconocidos por el cliente
+            example: "/aclaraciones/cargos"
+      aclaraciones-folio-get:
+        type: object
+        properties:
+          displayName:
+            type: string
+            description: Obtiene el folio especifico generado por cada cliente.
+            example: "/aclaraciones/folio"
+      aclaraciones-busquedas-estatus-post:
+        type: object
+        properties:
+          displayName:
+            type: string
+            description: Se obtienen los folios generados con estatus y en un rango de fechas.
+            example: "/aclaraciones/busquedas/estatus"
+      aclaraciones-busquedas-clientes-post:
+        type: object
+        properties:
+          displayName:
+            type: string
+            description: Se Obtienen los folios por el idCliente y idClienteBanco.
+            example: "/aclaraciones/busquedas/clientes"

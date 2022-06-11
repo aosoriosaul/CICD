@@ -1,0 +1,49 @@
+{
+  "mensaje": "Operacion exitosa",
+  "folio": "098-201908131017594500",
+  "resultado": {
+    "folio": "10000001",
+    "motivo": "OPERACION RECHAZADA",
+    "montoReclamado": "149.00",
+    "comision": "0.00",
+    "producto": "TARJETA DE DEBITO / TARJETA",
+    "tipoAclaracion": "Retenciones",
+    "tipificacion": "Cargo no reconocido",
+    "idSucursal": "9999",
+    "nombreSucursal": "Coyoacan",
+    "comentario": "Esto es una prueba de",
+    "estatus": "FINALIZADA",
+    "tiempoResolucion": 6,
+    "fechaPromesa": "06/10/2021",
+    "fechaCreacion": "30/09/2021",
+    "fechaResolucion": "30/09/2021",
+    "horaCreacion": "23:52:03",
+    "comentarioResponsable": "PRUEBAS SISTEMAS",
+    "movimientos": [
+      {
+        "tipoOperacion": "COMPRA",
+        "monto": "149.00",
+        "descripcionComercio": "AMAZON MX, MEXICO DF",
+        "canalOperacion": 1,
+        "fechaImporte": "30/09/2021",
+        "fallo": "NO PROCEDENTE"
+      }
+    ],
+    "operador": {
+      "nombre": "PROCESO AUTOMATICO",
+      "accion": "FINALIZACIÓN"
+    },
+    "documentos": [
+      {
+        "idTipo": "1",
+        "uri": "01-001-001"
+      }
+    ],
+    "cliente": {
+      "id": "09238490234",
+      "numeroCuenta": "xxxx-xxxx-xxxx-3123",
+      "numeroTarjeta": "xxxx-xxxx-xxxx-0213",
+      "estatusTarjeta": "ACTIVA"
+    }
+  }
+}

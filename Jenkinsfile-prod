@@ -1,0 +1,19 @@
+node {
+    properties([
+        parameters([
+            text(name:'projectId', defaultValue:'2808', description:'Identificador de proyecto en gitlab'),
+            booleanParam(defaultValue: false, description: 'LimpiarWorkspace', name: 'LimpiarWorkspace'),
+            booleanParam(name: 'keepNode', defaultValue: false, description: 'Conserva la carpeta node')
+        ])
+    ])
+
+    deleteDir()
+   
+     withCredentials([usernamePassword(credentialsId: 'gitlab_rke_devops_cred', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
+        sh 'git clone http://${USER}:${PASS}@gitlab-unicorn.gitlab.svc.cluster.local:8181/servicios-cloud/banco-azteca/apigee/librerias/configuracion-api.git'
+    }
+    
+    def rootDirectory = pwd()
+    def jenkinsfile =  load "${rootDirectory}/configuracion-api/jenkinsfilemaster.groovy"
+    jenkinsfile.mainFlow()
+}

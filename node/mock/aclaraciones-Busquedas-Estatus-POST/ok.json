@@ -1,0 +1,22 @@
+{
+  "mensaje": "Operacion exitosa",
+  "folio": "098-201908131017594500",
+  "resultado": {
+    "aclaraciones": [
+      {
+        "folio": "100000000001",
+        "numeroCuenta": "67741388158481",
+        "numeroTarjeta": "4027664177696022",
+        "motivo": "OPERACION RECHAZADA",
+        "montoTotal": "99",
+        "producto": "TARJETA DE DEBITO",
+        "concepto": "COMPRA EN ESTABLECIMIENTO",
+        "clasificacion": "CARGO INDEBIDO",
+        "dictamen": "NO PROCEDE",
+        "fechaCreacion": "2021-06-29",
+        "fechaResolucion": "2021-06-30",
+        "estatus": "EN PROCESO"
+      }
+    ]
+  }
+}

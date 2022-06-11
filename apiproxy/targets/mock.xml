@@ -1,0 +1,93 @@
+<TargetEndpoint name="mock">
+    <Description>Levantar y gestionar informacion relacionada a las aclaraciones en el sistema - MOCK</Description>
+    <FaultRules>
+        <!-- could put additional fault rules here if needed for local proxy -->
+    </FaultRules>
+    <DefaultFaultRule name="fault-rule">
+        <!-- Begin Logging -->
+        <Step>
+            <Name>AM-TargetEndPoint</Name>
+        </Step>
+        <Step>
+            <Name>JS-ContextFlow</Name>
+        </Step>
+        <Step>
+            <Name>FC-Logging</Name>
+        </Step>
+        <!-- End Logging -->
+        <!-- Begin Mediacion de Errores -->
+        <!-- End Mediacion de Errores -->
+        <AlwaysEnforce>true</AlwaysEnforce>
+    </DefaultFaultRule>
+    <PreFlow name="PreFlow">
+        <Request>
+            <!-- Begin Políticas -->
+            <Step>
+                <Name>FC-Cifrado-Acceso</Name>
+            </Step>
+            <!-- End Políticas -->
+            <!-- Begin Logging -->
+            <Step>
+                <Name>JS-ContextFlow</Name>
+            </Step>
+            <Step>
+                <Name>FC-Logging</Name>
+            </Step>
+            <!-- End Logging -->
+        </Request>
+        <Response>
+            <!-- Begin Logging -->
+            <Step>
+                <Name>JS-ContextFlow</Name>
+            </Step>
+            <Step>
+                <Name>FC-Logging</Name>
+            </Step>
+            <!-- End Logging -->
+            <!-- Begin Políticas -->
+            <!-- End Políticas -->
+        </Response> 
+    </PreFlow>
+    <Flows/>
+    <PostFlow name="PostFlow">
+        <Request>
+            <!-- Begin Políticas -->
+            <!-- End Políticas -->
+            <!-- Begin Logging -->
+            <Step>
+                <Name>JS-ContextFlow</Name>
+            </Step>
+            <Step>
+                <Name>FC-Logging</Name>
+            </Step>
+            <!-- End Logging -->    
+        </Request>
+        <Response>
+            <!-- Begin Conext Flow -->
+            <Step>
+                <Name>JS-ContextFlow</Name>
+            </Step>
+            <!-- End Conext Flow -->
+            <!-- Begin Políticas -->
+            <Step>
+                <Name>FC-Cifrado-Acceso</Name>
+            </Step>
+
+            <Step>
+                <Condition>(message.status.code GreaterThanOrEquals 400)</Condition>
+                <Name>AM-Error-Mock</Name>
+            </Step>
+            <Step>
+                <Condition>(message.status.code GreaterThanOrEquals 400)</Condition>
+                <Name>RF-Error-Mock</Name>
+            </Step>
+            <Step>
+                <Name>AM-Eliminar-Headers-Mock</Name>
+            </Step>    
+            <!-- End Políticas -->        
+        </Response> 
+    </PostFlow>
+    <ScriptTarget>
+            <ResourceURL>node://app.js</ResourceURL>
+    </ScriptTarget>
+</TargetEndpoint>
